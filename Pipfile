@@ -10,6 +10,9 @@ aiofiles = "*"
 jinja2 = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 gunicorn = "*"
+ginza = "*"
+ja-ginza-electra = {file = "https://github.com/megagonlabs/ginza/releases/download/latest/ja_ginza_electra-latest-with-model.tar.gz"}
+ja-ginza = "*"
 
 [dev-packages]
 
@@ -18,3 +21,6 @@ python_version = "3.9"
 
 [scripts]
 start = "uvicorn main:app --reload"
+
+[pipenv]
+allow_prereleases = true
