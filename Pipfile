@@ -11,7 +11,6 @@ jinja2 = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 gunicorn = "*"
 ginza = "*"
-ja-ginza-electra = {file = "https://github.com/megagonlabs/ginza/releases/download/latest/ja_ginza_electra-latest-with-model.tar.gz"}
 ja-ginza = "*"
 
 [dev-packages]

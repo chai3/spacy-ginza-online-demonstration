@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "65dadf35e512fd22d2e7b542ab9b4eb46439add46c41f978de11633232659861"
+            "sha256": "61470f02a3bf61f8151c717851b4bbef808971e856e771dd0e15e83af1558d61"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -250,13 +250,6 @@
                 "sha256:fe6580f54b4b4810ddfcd619b8e91705408cf840e55a6f6435c995f9ea7b0ee8"
             ],
             "index": "pypi",
-            "version": "==5.0.0"
-        },
-        "ja-ginza-electra": {
-            "file": "https://github.com/megagonlabs/ginza/releases/download/latest/ja_ginza_electra-latest-with-model.tar.gz",
-            "hashes": [
-                "sha256:ca662ad1ff4ada2bce9d50cee4f92a84d4694f5b6686f9ce95899a3c944b0cc8"
-            ],
             "version": "==5.0.0"
         },
         "jinja2": {
