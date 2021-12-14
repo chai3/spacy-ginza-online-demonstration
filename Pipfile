@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+python-multipart = "*"
+aiofiles = "*"
+jinja2 = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+gunicorn = "*"
+ginza = "*"
+ja-ginza = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
+
+[scripts]
+start = "uvicorn main:app --reload"
+
+[pipenv]
+allow_prereleases = true
