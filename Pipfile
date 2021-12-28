@@ -10,10 +10,11 @@ aiofiles = "*"
 jinja2 = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 gunicorn = "*"
-ginza = "*"
+ginza = {ref = "297820bbc8e29ff9dd3681d080aec8b0d15242b7", git = "https://github.com/megagonlabs/ginza.git"}
 ja-ginza = "*"
 
 [dev-packages]
+autopep8 = "*"
 
 [requires]
 python_version = "3.9"

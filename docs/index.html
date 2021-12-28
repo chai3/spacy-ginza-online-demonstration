@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Spacy/Ginza online demonstration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <div id="app">
+    <v-app>
+      <v-main>
+        <v-container>
+          <h1>Spacy/Ginza online demonstration(unofficial)</h1>
+          <p><a target="_blank" rel="noopener noreferrer" href="https://megagonlabs.github.io/ginza/">Spacy/Ginza</a>
+            is an open source japanese NLP library, based on Universal Dependencies.</p>
+          <v-radio-group hide-details class="ma-0" mandatory dense row v-model="ignoreLf">
+            <div style="width: 200px">Ignore sentence line feed</div>
+            <v-radio label="true" value=true></v-radio>
+            <v-radio label="false" value=false></v-radio>
+          </v-radio-group>
+          <v-radio-group hide-details class="ma-0" mandatory dense row v-model="splitMode">
+            <div style="width: 200px">Split Mode</div>
+            <v-radio label="A" value="A"></v-radio>
+            <v-radio label="B" value="B"></v-radio>
+            <v-radio label="C" value="C"></v-radio>
+            see&nbsp;Sudachi&nbsp;<a target="_blank" rel="noopener noreferrer"
+              href="https://github.com/WorksApplications/Sudachi#the-modes-of-splitting">
+              The modes of splitting</a>
+          </v-radio-group>
+          <v-radio-group hide-details mandatory dense row class="ma-0" v-model="outputFormat">
+            <div style="width: 200px">Output Format</div>
+            <v-radio label="conllu" value="conllu"></v-radio>
+            <v-radio label="cabocha" value="cabocha"></v-radio>
+            <v-radio label="mecab" value="mecab"></v-radio>
+            <v-radio label="json" value="json"></v-radio>
+          </v-radio-group>
+          <v-textarea outlined clearable counter required clear-icon="mdi-close-circle" label="Enter sentence"
+            v-model="inputText" :rules="inputTextRule"></v-textarea>
+
+
+          <v-btn color="primary" :disabled="!(inputText && inputText.length <= 500)" :loading="isLoading"
+            @click="clickRun">
+            Run
+          </v-btn>
+          <v-btn color="secondary" class="ml-4" @click="clickClear">
+            Clear
+          </v-btn>
+          <template v-if="resultText">
+            <h2 class="mt-8">Spacy/Ginza Segmentation</h2>
+            <pre style="overflow:auto; border: 1px solid #000000">{{ resultText }}</pre>
+          </template>
+        </v-container>
+      </v-main>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data: {
+        inputText: "銀座でランチをご一緒しましょう。\n東京都へ行く。選挙管理委員会",
+        ignoreLf: true,
+        splitMode: "C",
+        outputFormat: "conllu",
+        isLoading: false,
+        resultText: "",
+        inputTextRule: [v => v && v.length <= 200 || 'Require 1 - 500 characters'],
+      },
+      methods: {
+        async clickRun() {
+          this.isLoading = true;
+          this.resultText = "";
+
+          try {
+            //const URL = "http://127.0.0.1:8000/analyze";
+            const URL = "https://spacy-ginza-online-demo.herokuapp.com/analyze";
+            const text = encodeURIComponent(this.inputText);
+            const params = new URLSearchParams({
+              text: this.inputText,
+              ignore_lf: this.ignoreLf,
+              split_mode: this.splitMode,
+              output_format: this.outputFormat,
+            });
+            const res = await fetch(URL + "?" + params.toString());
+            const res_text = await res.text();
+            if (!res.ok) {
+              throw Error(`API Error ${res.status} ${res.statusText} ${res_text}`)
+            }
+            const res_obj = JSON.parse(res_text);
+            if (!res_obj.results.length) {
+              throw Error(`API Error ${res.status} ${res.statusText} ${res_text}`)
+            }
+            this.isLoading = false;
+            this.resultText = res_obj.results.join("\n");
+          } catch (e) {
+            this.isLoading = false;
+            this.resultText = `Please try again. Or change to short text.\n\n` + e.toString();
+            throw e;
+          }
+
+
+        },
+        clickClear() {
+          this.inputText = "";
+          this.isLoading = false;
+          this.resultText = "";
+        }
+      },
+      mounted() {
+        // warm up heroku
+        const WARM_UP_URL = "https://spacy-ginza-online-demo.herokuapp.com/warmup";
+        fetch(WARM_UP_URL);
+      }
+    });
+  </script>
+</body>
+
+</html>
