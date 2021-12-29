@@ -53,13 +53,13 @@ def analyze(
 
 
 @app.get("/warmup")
-def warmUpHeroku(request: Request):
+def warm_up_heroku(request: Request):
     print(f"warmUpHeroku {threading.get_ident()} {request}")
     return {"message": "success"}
 
 
 @app.get("/test_timeout")
-def testTimeout(request: Request):
+def test_timeout(request: Request):
     for i in range(360):  # 60 min
         print(f"sleep {threading.get_ident()} {i} {request}")
         time.sleep(10)
@@ -68,7 +68,7 @@ def testTimeout(request: Request):
 
 
 @app.get("/test_raise")
-def testTimeout():
+def test_raise():
     raise RuntimeError("test raise")
 
 
