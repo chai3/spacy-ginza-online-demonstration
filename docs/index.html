@@ -15,10 +15,15 @@
     gtag('js', new Date());
     gtag('config', 'G-RSS6J0ERWJ');
   </script>
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
-  <div id="app">
+  <div id="app" v-cloak>
     <v-app>
       <v-main>
         <v-container>
@@ -48,8 +53,6 @@
           </v-radio-group>
           <v-textarea outlined clearable counter required clear-icon="mdi-close-circle" label="Enter sentence"
             v-model="inputText" :rules="inputTextRule"></v-textarea>
-
-
           <v-btn color="primary" :disabled="!(inputText && inputText.length <= 500)" :loading="isLoading"
             @click="clickRun">
             Run
@@ -57,9 +60,10 @@
           <v-btn color="secondary" class="ml-4" @click="clickClear">
             Clear
           </v-btn>
-          <template v-if="resultText">
+          <template v-if="resultText||isLoading">
             <h2 class="mt-8">Spacy/Ginza Segmentation</h2>
-            <pre style="overflow:auto; border: 1px solid #000000">{{ resultText }}</pre>
+            <v-progress-linear color="light-blue" height="10" :value="progress" striped></v-progress-linear>
+            <pre style="overflow:auto; border: 1px solid #000000;min-height: 300px">{{ resultText }}</pre>
           </template>
           <v-divider class="my-8"></v-divider>
           Source Code: <a target="_blank" rel="noopener noreferrer"
@@ -85,6 +89,7 @@
         splitMode: "C",
         outputFormat: "conllu",
         isLoading: false,
+        progress: 0,
         resultText: "",
         inputTextRule: [v => v && v.length <= 200 || 'Require 1 - 500 characters'],
       },
@@ -92,7 +97,9 @@
         async clickRun() {
           this.isLoading = true;
           this.resultText = "";
-
+          this.progress = 0;
+          const HEROKU_TIMEOUT = 30000;
+          const intervalId = setInterval(this.incrementProgress, HEROKU_TIMEOUT / 100);
           try {
             //const URL = "http://127.0.0.1:8000/analyze";
             const URL = "https://spacy-ginza-online-demo.herokuapp.com/analyze";
@@ -112,20 +119,23 @@
             if (!res_obj.results.length) {
               throw Error(`API Error ${res.status} ${res.statusText} ${res_text}`)
             }
-            this.isLoading = false;
             this.resultText = res_obj.results.join("\n");
           } catch (e) {
-            this.isLoading = false;
             this.resultText = `Please try again. Or change to short text.\n\n` + e.toString();
             throw e;
+          } finally {
+            this.isLoading = false;
+            this.progress = 100;
+            clearInterval(intervalId);
           }
-
-
         },
         clickClear() {
           this.inputText = "";
           this.isLoading = false;
           this.resultText = "";
+        },
+        incrementProgress() {
+          this.progress += 1;
         }
       },
       mounted() {
