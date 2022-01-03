@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Spacy/Ginza online demonstration</title>
+  <title>spaCy/GiNZA online demonstration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
@@ -27,8 +27,8 @@
     <v-app>
       <v-main>
         <v-container>
-          <h1>Spacy/Ginza online demonstration(unofficial)</h1>
-          <p><a target="_blank" rel="noopener noreferrer" href="https://megagonlabs.github.io/ginza/">Spacy/Ginza</a>
+          <h1>spaCy/GiNZA online demonstration(unofficial)</h1>
+          <p><a target="_blank" rel="noopener noreferrer" href="https://megagonlabs.github.io/ginza/">spaCy/GiNZA</a>
             is an open source japanese NLP library, based on Universal Dependencies.</p>
           <v-radio-group hide-details class="ma-0" mandatory dense row v-model="ignoreLf">
             <div style="width: 200px">Ignore sentence line feed</div>
@@ -61,7 +61,7 @@
             Clear
           </v-btn>
           <template v-if="resultText||isLoading">
-            <h2 class="mt-8">Spacy/Ginza Segmentation</h2>
+            <h2 class="mt-8">spaCy/GiNZA Segmentation</h2>
             <v-progress-linear color="light-blue" height="10" :value="progress" striped></v-progress-linear>
             <pre style="overflow:auto; border: 1px solid #000000;min-height: 300px">{{ resultText }}</pre>
           </template>
@@ -69,9 +69,7 @@
           Source Code: <a target="_blank" rel="noopener noreferrer"
             href="https://github.com/chai3/spacy-ginza-online-demonstration">
             https://github.com/chai3/spacy-ginza-online-demonstration</a><br />
-          Online demo Web API: <a target="_blank" rel="noopener noreferrer"
-            href="https://github.com/chai3/spacy-ginza-online-demonstration">
-            https://spacy-ginza-online-demo.herokuapp.com/docs</a><br />
+          GiNZA v5.1(ja_ginza), spaCy v3.2, SudachiPy v0.6.2<br />
         </v-container>
       </v-main>
     </v-app>
