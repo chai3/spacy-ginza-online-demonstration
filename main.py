@@ -29,7 +29,7 @@ def analyze(
     split_mode: str = "C",  # A,B,C
     output_format: str = "conllu",  # conllu, cabocha, mecab, json
 ):
-    print(f"[{os.getpid()} {threading.get_ident()} {id(request)}] analyze start {text=} {ignore_lf=} {split_mode=} {output_format=} {request.headers.items()=} {psutil.virtual_memory()=}")
+    print(f"[{os.getpid()} {threading.get_ident()} {id(request)}] analyze start {text=} {ignore_lf=} {split_mode=} {output_format=} {request.headers.items()=} {psutil.Process().memory_info()=}")
     from ginza.analyzer import Analyzer
     analyzer = Analyzer(
         model_name_or_path="ja_ginza",
@@ -42,7 +42,7 @@ def analyze(
     )
     results = []
 
-    print(f"[{os.getpid()} {threading.get_ident()} {id(request)}] analyze set_nlp {psutil.virtual_memory()=}")
+    print(f"[{os.getpid()} {threading.get_ident()} {id(request)}] analyze set_nlp {psutil.Process().memory_info()=}")
     analyzer.set_nlp()
 
     text = text.replace("\t", " ").replace("\r", "")
@@ -52,27 +52,27 @@ def analyze(
     for text_line in text.splitlines():
         results.append(analyzer.analyze_line(text_line))
 
-    print(f"[{os.getpid()} {threading.get_ident()} {id(request)}] analyze end {len(results)=} {psutil.virtual_memory()=}")
+    print(f"[{os.getpid()} {threading.get_ident()} {id(request)}] analyze end {len(results)=} {psutil.Process().memory_info()=}")
     return {"results": results}
 
 
 @app.get("/warmup")
 def warm_up(request: Request):
-    print(f"[{os.getpid()} {threading.get_ident()} {id(request)}] warmup {request.headers.items()=} {psutil.virtual_memory()=}")
+    print(f"[{os.getpid()} {threading.get_ident()} {id(request)}] warmup {request.headers.items()=} {psutil.Process().memory_info()=}")
     return {"message": "success"}
 
 
 @app.get("/test_timeout")
 def test_timeout(request: Request):
     for i in range(360):  # 60 min
-        print(f"[{os.getpid()} {threading.get_ident()} {id(request)}] sleep {i} {psutil.virtual_memory()=}")
+        print(f"[{os.getpid()} {threading.get_ident()} {id(request)}] sleep {i} {psutil.Process().memory_info()=}")
         time.sleep(10)
     return {"message": "success"}
 
 
 @app.get("/test_raise")
 def test_raise():
-    print(f"[{os.getpid()} {threading.get_ident()} {id(request)}] raise {psutil.virtual_memory()=}")
+    print(f"[{os.getpid()} {threading.get_ident()} {id(request)}] raise {psutil.Process().memory_info()=}")
     raise RuntimeError("test raise")
 
 
