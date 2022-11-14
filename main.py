@@ -71,7 +71,7 @@ def test_timeout(request: Request):
 
 
 @app.get("/test_raise")
-def test_raise():
+def test_raise(request: Request):
     print(f"[{os.getpid()} {threading.get_ident()} {id(request)}] raise {psutil.Process().memory_info()=}")
     raise RuntimeError("test raise")
 
