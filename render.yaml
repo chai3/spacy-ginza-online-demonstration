@@ -7,4 +7,4 @@ services:
     startCommand: gunicorn --workers=4 --worker-class=uvicorn.workers.UvicornWorker main:app
     envVars:
     - key: PYTHON_VERSION
-      value: 3.9
+      value: 3.9.15
