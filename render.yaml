@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: spacy-ginza-online-demonstration
+    env: python
+    plan: free
+    buildCommand: pipenv sync
+    # startCommand: gunicorn --workers=4 --worker-class=uvicorn.workers.UvicornWorker main:app
+    # workers=4 is out of memory with free plan(512MB)
+    startCommand: gunicorn --workers=1 --worker-class=uvicorn.workers.UvicornWorker main:app
+    envVars:
+    - key: PYTHON_VERSION
+      value: 3.9.15
