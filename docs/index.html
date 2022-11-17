@@ -43,8 +43,8 @@
             <v-radio label="mecab" value="mecab"></v-radio>
             <v-radio label="json" value="json"></v-radio>
           </v-radio-group>
-          <v-textarea outlined clearable counter required clear-icon="mdi-close-circle" label="Enter sentence"
-            v-model="inputText" :rules="inputTextRule"></v-textarea>
+          <v-textarea outlined clearable counter required class="mt-2" clear-icon="mdi-close-circle"
+            label="Enter sentence" v-model="inputText" :rules="inputTextRule"></v-textarea>
           <v-btn color="primary" :disabled="!(inputText && inputText.length <= 500)" :loading="isLoading"
             @click="clickRun">
             Run
@@ -70,6 +70,10 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
   <script>
+    // const SERVER_URL = "http://127.0.0.1:8000";
+    // const SERVER_URL = "https://spacy-ginza-online-demo.herokuapp.com";
+    const SERVER_URL = "https://spacy-ginza-online-demonstration.onrender.com";
+
     new Vue({
       el: '#app',
       vuetify: new Vuetify(),
@@ -78,6 +82,7 @@
         ignoreLf: true,
         splitMode: "C",
         outputFormat: "conllu",
+
         isLoading: false,
         progress: 0,
         resultText: "",
@@ -91,9 +96,6 @@
           const HEROKU_TIMEOUT = 30000;
           const intervalId = setInterval(this.incrementProgress, HEROKU_TIMEOUT / 100);
           try {
-            // const URL = "http://127.0.0.1:8000/analyze";
-            // const URL = "https://spacy-ginza-online-demo.herokuapp.com/analyze";
-            const URL = "https://spacy-ginza-online-demonstration.onrender.com/analyze";
             const text = encodeURIComponent(this.inputText);
             const params = new URLSearchParams({
               text: this.inputText,
@@ -101,7 +103,7 @@
               split_mode: this.splitMode,
               output_format: this.outputFormat,
             });
-            const res = await fetch(URL + "?" + params.toString());
+            const res = await fetch(SERVER_URL + "/analyze" + "?" + params.toString());
             const res_text = await res.text();
             if (!res.ok) {
               throw Error(`API Error ${res.status} ${res.statusText} ${res_text}`)
@@ -130,9 +132,8 @@
         }
       },
       mounted() {
-        // warm up heroku
-        const WARM_UP_URL = "https://spacy-ginza-online-demo.herokuapp.com/warmup";
-        fetch(WARM_UP_URL);
+        // warm up for cold boot
+        fetch(SERVER_URL + "/warmup");
       }
     });
   </script>
