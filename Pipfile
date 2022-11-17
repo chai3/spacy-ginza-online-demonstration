@@ -10,8 +10,7 @@ aiofiles = "*"
 jinja2 = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 gunicorn = "*"
-ginza = {ref = "297820bbc8e29ff9dd3681d080aec8b0d15242b7", git = "https://github.com/megagonlabs/ginza.git"}
-ja-ginza = "*"
+ja-ginza = "5.1.2"
 psutil = "*"
 
 [dev-packages]
