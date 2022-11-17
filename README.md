@@ -3,7 +3,7 @@
 ## online demonstration(Github Pages)
 [spaCy/GiNZA online demo pages](https://chai3.github.io/spacy-ginza-online-demonstration/)
 
-## ~~Web API~~
+## Web API
 - [spaCy/GiNZA online demo Web API(Render)](https://spacy-ginza-online-demonstration.onrender.com/docs)
 - ~~[spaCy/GiNZA online demo Web API(Heroku)](https://spacy-ginza-online-demo.herokuapp.com/docs)~~
 
