@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 fastapi = "*"
-python-multipart = "*"
+python-multipart = "==0.109.0"
 aiofiles = "*"
 jinja2 = "*"
 uvicorn = {extras = ["standard"], version = "*"}
